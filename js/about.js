@@ -17,7 +17,7 @@ function parseTweets(runkeeper_tweets) {
 	let firstDate = null;
 	let lastDate = null;
 
-	var runTweets = function(tweet) {
+	var runTweetDates = function(tweet) {
 		currentDate = tweet.time;
 		
 		if (firstDate === null || firstDate > currentDate) {
@@ -26,9 +26,8 @@ function parseTweets(runkeeper_tweets) {
 		if (lastDate === null || lastDate < currentDate) {
 			lastDate = currentDate;
 		}
-		console.log(tweet);
 	}
-	tweet_array.forEach(runTweets);
+	tweet_array.forEach(runTweetDates);
 
 	firstDate = firstDate.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
 	lastDate = lastDate.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
@@ -37,7 +36,48 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById('lastDate').innerText = lastDate;
 
 	//Tweet Categories
+	let completedEvents = 0;
+	let liveEvents = 0;
+	let achievements = 0;
+	let miscellaneous = 0;
 
+	var runTweetCategories = function(tweet) {
+		// console.log(tweet.text);
+		if (tweet.source === "completed_event") {
+			completedEvents += 1;
+		}
+		else if (tweet.source === "live_event") {
+			// console.log(tweet.text);
+			liveEvents += 1;
+		}
+		else if (tweet.source === "achievement") {
+			// console.log(tweet.text);
+			achievements += 1;
+		}
+		else if (tweet.source === "miscellaneous") {
+			// console.log(tweet.text);
+			miscellaneous += 1;
+		}
+	}
+	tweet_array.forEach(runTweetCategories);
+
+	document.querySelector(".completedEvents").textContent = completedEvents;
+	document.querySelector(".liveEvents").textContent = liveEvents;
+	document.querySelector(".achievements").textContent = achievements;
+	document.querySelector(".miscellaneous").textContent = miscellaneous;
+
+	const numberOfTweets = tweet_array.length;
+	const completedEventsPct = ((completedEvents / numberOfTweets) * 100).toFixed(2);
+	const liveEventsPct = ((liveEvents / numberOfTweets) * 100).toFixed(2);
+	const achievementsPct = ((achievements / numberOfTweets) * 100).toFixed(2);
+	const miscellaneousPct = ((miscellaneous / numberOfTweets) * 100).toFixed(2);
+
+	document.querySelector(".completedEventsPct").textContent = completedEventsPct + "%";
+	document.querySelector(".liveEventsPct").textContent = liveEventsPct + "%";
+	document.querySelector(".achievementsPct").textContent = achievementsPct + "%";
+	document.querySelector(".miscellaneousPct").textContent = miscellaneousPct + "%";
+
+	//User-Written Tweets
 }
 
 //Wait for the DOM to load
