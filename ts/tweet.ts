@@ -27,7 +27,48 @@ class Tweet {
     //returns a boolean, whether the text includes any content written by the person tweeting.
     get written():boolean {
         //TODO: identify whether the tweet is written
-        return false;
+        let text = this.text
+        .replace(/#Runkeeper/gi, "")
+        .replace(/https:\/\/t\.co\/[a-zA-Z0-9]+/gi, "")
+        
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ with Runkeeper\. Check it out!/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ \w+ with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ - TomTom MySports Watch/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ -/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ \w+ -/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) MySports Freestyle - TomTom MySports Watch/gi, "")
+        
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ \w+ with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \w+ in \d+:\d+  with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+  with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ \w+ -/gi, "")
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ -/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+:\d+  - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+:\d+  with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \w+ in \d+:\d+:\d+  - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a \w+ in \d+:\d+  - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+  - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a CrossFit® workout in \d+:\d+  -/gi, "")
+        .replace(/Just posted a CrossFit® workout in \d+:\d+:\d+  -/gi, "")
+        .replace(/Just posted a CrossFit® workout in \d+:\d+:\d+  with @Runkeeper. Check it out!/gi, "")
+        .replace(/Just posted a CrossFit® workout in \d+:\d+  with @Runkeeper. Check it out!/gi, "")
+        .replace(/Just posted an \w+ \w+ in \d+:\d+  with @Runkeeper. Check it out!/gi, "")
+        .replace(/Just posted an \w+ \w+ in \d+:\d+:\d+  with @Runkeeper. Check it out!/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+:\d+  -/gi, "")
+        .replace(/Just posted a group workout in \d+:\d+. -/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+  -/g, "")
+        .trim();
+        // console.log(text);
+        // console.log(text.length)
+        if (text.length != 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     get writtenText():string {
@@ -35,7 +76,41 @@ class Tweet {
             return "";
         }
         //TODO: parse the written text from the tweet
-        return "";
+        let text = this.text
+        .replace(/#Runkeeper/gi, "")
+        .replace(/https:\/\/t\.co\/[a-zA-Z0-9]+/gi, "")
+        
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ with Runkeeper\. Check it out!/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ \w+ with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ - TomTom MySports Watch/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ -/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ \w+ -/gi, "")
+        .replace(/Just completed a \d+\.\d+ (km|mi) MySports Freestyle - TomTom MySports Watch/gi, "")
+        
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ \w+ with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \w+ in \d+:\d+  with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+  with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ \w+ -/gi, "")
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ -/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+:\d+  - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+:\d+  with @Runkeeper\. Check it out!/gi, "")
+        .replace(/Just posted a \w+ in \d+:\d+:\d+  - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a \w+ in \d+:\d+  - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+  - TomTom MySports Watch/gi, "")
+        .replace(/Just posted a CrossFit® workout in \d+:\d+  -/gi, "")
+        .replace(/Just posted a CrossFit® workout in \d+:\d+:\d+  -/gi, "")
+        .replace(/Just posted a CrossFit® workout in \d+:\d+:\d+  with @Runkeeper. Check it out!/gi, "")
+        .replace(/Just posted a CrossFit® workout in \d+:\d+  with @Runkeeper. Check it out!/gi, "")
+        .replace(/Just posted an \w+ \w+ in \d+:\d+  with @Runkeeper. Check it out!/gi, "")
+        .replace(/Just posted an \w+ \w+ in \d+:\d+:\d+  with @Runkeeper. Check it out!/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+:\d+  -/gi, "")
+        .replace(/Just posted a group workout in \d+:\d+. -/gi, "")
+        .replace(/Just posted a \w+ \w+ in \d+:\d+  -/g, "")
+        .trim();
+        return text;
     }
 
     get activityType():string {

@@ -44,6 +44,7 @@ function parseTweets(runkeeper_tweets) {
 	var runTweetCategories = function(tweet) {
 		// console.log(tweet.text);
 		if (tweet.source === "completed_event") {
+			// console.log(tweet.text);
 			completedEvents += 1;
 		}
 		else if (tweet.source === "live_event") {
@@ -61,7 +62,15 @@ function parseTweets(runkeeper_tweets) {
 	}
 	tweet_array.forEach(runTweetCategories);
 
-	document.querySelector(".completedEvents").textContent = completedEvents;
+
+	const completedEventsElements = document.querySelectorAll(".completedEvents");
+	var runCompletedEvents = function (text) {
+		text.textContent = completedEvents;
+	}
+	completedEventsElements.forEach(runCompletedEvents);
+
+
+	// document.querySelector(".completedEvents").textContent = completedEvents;
 	document.querySelector(".liveEvents").textContent = liveEvents;
 	document.querySelector(".achievements").textContent = achievements;
 	document.querySelector(".miscellaneous").textContent = miscellaneous;
@@ -78,6 +87,19 @@ function parseTweets(runkeeper_tweets) {
 	document.querySelector(".miscellaneousPct").textContent = miscellaneousPct + "%";
 
 	//User-Written Tweets
+	let written = 0;
+
+	var runUserWrittenTweets = function(tweet) {
+		if (tweet.source === "completed_event" && tweet.written) {
+			written += 1;
+		}
+	}
+	tweet_array.forEach(runUserWrittenTweets);
+
+	document.querySelector(".written").textContent = written;
+
+	const writtenPct = ((written / completedEvents) * 100).toFixed(2);
+	document.querySelector(".writtenPct").textContent = writtenPct + "%";
 }
 
 //Wait for the DOM to load
