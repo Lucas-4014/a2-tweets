@@ -24,10 +24,8 @@ class Tweet {
         }
     }
 
-    //returns a boolean, whether the text includes any content written by the person tweeting.
-    get written():boolean {
-        //TODO: identify whether the tweet is written
-        let text = this.text
+    private parseWrittenText():string {
+        let parsedText = this.text
         .replace(/#Runkeeper/gi, "")
         .replace(/https:\/\/t\.co\/[a-zA-Z0-9]+/gi, "")
         
@@ -61,9 +59,14 @@ class Tweet {
         .replace(/Just posted a group workout in \d+:\d+. -/gi, "")
         .replace(/Just posted a \w+ \w+ in \d+:\d+  -/g, "")
         .trim();
-        // console.log(text);
-        // console.log(text.length)
-        if (text.length != 0) {
+        
+        return parsedText;
+    }
+
+    //returns a boolean, whether the text includes any content written by the person tweeting.
+    get written():boolean {
+        //TODO: identify whether the tweet is written
+        if (this.parseWrittenText().length != 0) {
             return true;
         }
         else {
@@ -76,41 +79,7 @@ class Tweet {
             return "";
         }
         //TODO: parse the written text from the tweet
-        let text = this.text
-        .replace(/#Runkeeper/gi, "")
-        .replace(/https:\/\/t\.co\/[a-zA-Z0-9]+/gi, "")
-        
-        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ with @Runkeeper\. Check it out!/gi, "")
-        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ with Runkeeper\. Check it out!/gi, "")
-        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ \w+ with @Runkeeper\. Check it out!/gi, "")
-        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ - TomTom MySports Watch/gi, "")
-        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ -/gi, "")
-        .replace(/Just completed a \d+\.\d+ (km|mi) \w+ \w+ -/gi, "")
-        .replace(/Just completed a \d+\.\d+ (km|mi) MySports Freestyle - TomTom MySports Watch/gi, "")
-        
-        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ with @Runkeeper\. Check it out!/gi, "")
-        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ \w+ with @Runkeeper\. Check it out!/gi, "")
-        .replace(/Just posted a \w+ in \d+:\d+  with @Runkeeper\. Check it out!/gi, "")
-        .replace(/Just posted a \w+ \w+ in \d+:\d+  with @Runkeeper\. Check it out!/gi, "")
-        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ \w+ -/gi, "")
-        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ - TomTom MySports Watch/gi, "")
-        .replace(/Just posted a \d+\.\d+ (km|mi) \w+ -/gi, "")
-        .replace(/Just posted a \w+ \w+ in \d+:\d+:\d+  - TomTom MySports Watch/gi, "")
-        .replace(/Just posted a \w+ \w+ in \d+:\d+:\d+  with @Runkeeper\. Check it out!/gi, "")
-        .replace(/Just posted a \w+ in \d+:\d+:\d+  - TomTom MySports Watch/gi, "")
-        .replace(/Just posted a \w+ in \d+:\d+  - TomTom MySports Watch/gi, "")
-        .replace(/Just posted a \w+ \w+ in \d+:\d+  - TomTom MySports Watch/gi, "")
-        .replace(/Just posted a CrossFit® workout in \d+:\d+  -/gi, "")
-        .replace(/Just posted a CrossFit® workout in \d+:\d+:\d+  -/gi, "")
-        .replace(/Just posted a CrossFit® workout in \d+:\d+:\d+  with @Runkeeper. Check it out!/gi, "")
-        .replace(/Just posted a CrossFit® workout in \d+:\d+  with @Runkeeper. Check it out!/gi, "")
-        .replace(/Just posted an \w+ \w+ in \d+:\d+  with @Runkeeper. Check it out!/gi, "")
-        .replace(/Just posted an \w+ \w+ in \d+:\d+:\d+  with @Runkeeper. Check it out!/gi, "")
-        .replace(/Just posted a \w+ \w+ in \d+:\d+:\d+  -/gi, "")
-        .replace(/Just posted a group workout in \d+:\d+. -/gi, "")
-        .replace(/Just posted a \w+ \w+ in \d+:\d+  -/g, "")
-        .trim();
-        return text;
+        return this.parseWrittenText();
     }
 
     get activityType():string {
@@ -118,14 +87,69 @@ class Tweet {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        return "";
+        let activityAndDistanceArray = this.text.match(/\d+.\d+\s*(mi|km)\s+[a-zA-Z]+/);
+        let activityAndDistance;
+        
+        if (activityAndDistanceArray != null) {
+            activityAndDistance = activityAndDistanceArray[0].split(" ");
+            if (activityAndDistance.length === 2) {
+                activityAndDistance = activityAndDistanceArray[0].replace(/(\d+.\d+)(mi|km)/, "$1 $2").split(" ");
+            }
+
+            const activity:string = activityAndDistance[2].toLowerCase();
+            
+            if (activity === "nordic") {
+                return "nordic walk";
+            }
+            else if (activity === "chair") {
+                return "chair ride";
+            }
+            else if (activity === "elliptical") {
+                return "elliptical workout";
+            }
+            else if (activity === "mtn") {
+                return "mtn bike";
+            }
+            else if (activity === "mysports") {
+                return "MySports Freestyle";
+            }
+            else if (activity === "ski") {
+                return "ski run";
+            }
+            else if (activity === "circuit") {
+                return "circuit workout";
+            }
+            
+            return activity;
+        }
+        else {
+            return "unknown";
+        }
     }
 
     get distance():number {
         if(this.source != 'completed_event') {
             return 0;
         }
-        //TODO: prase the distance from the text of the tweet
+        //TODO: parse the distance from the text of the tweet
+        let activityAndDistanceArray = this.text.match(/\d+.\d+\s*(mi|km)\s+[a-zA-Z]+/);
+        let activityAndDistance;
+        
+        if (activityAndDistanceArray != null) {
+            activityAndDistance = activityAndDistanceArray[0].split(" ");
+            if (activityAndDistance.length === 2) {
+                activityAndDistance = activityAndDistanceArray[0].replace(/(\d+.\d+)(mi|km)/, "$1 $2").split(" ");
+            }
+
+            const distanceNumber: number = Number(activityAndDistance[0]);
+            const distanceType: string = activityAndDistance[1].toLowerCase();
+            if (distanceType === "km") {
+                return Number((distanceNumber/1.609).toFixed(2));
+            }
+            else {
+               return distanceNumber; 
+            }
+        }
         return 0;
     }
 

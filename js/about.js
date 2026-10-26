@@ -18,7 +18,7 @@ function parseTweets(runkeeper_tweets) {
 	let lastDate = null;
 
 	var runTweetDates = function(tweet) {
-		currentDate = tweet.time;
+		let currentDate = tweet.time;
 		
 		if (firstDate === null || firstDate > currentDate) {
 			firstDate = currentDate;
@@ -42,21 +42,16 @@ function parseTweets(runkeeper_tweets) {
 	let miscellaneous = 0;
 
 	var runTweetCategories = function(tweet) {
-		// console.log(tweet.text);
 		if (tweet.source === "completed_event") {
-			// console.log(tweet.text);
 			completedEvents += 1;
 		}
 		else if (tweet.source === "live_event") {
-			// console.log(tweet.text);
 			liveEvents += 1;
 		}
 		else if (tweet.source === "achievement") {
-			// console.log(tweet.text);
 			achievements += 1;
 		}
 		else if (tweet.source === "miscellaneous") {
-			// console.log(tweet.text);
 			miscellaneous += 1;
 		}
 	}
@@ -69,8 +64,6 @@ function parseTweets(runkeeper_tweets) {
 	}
 	completedEventsElements.forEach(runCompletedEvents);
 
-
-	// document.querySelector(".completedEvents").textContent = completedEvents;
 	document.querySelector(".liveEvents").textContent = liveEvents;
 	document.querySelector(".achievements").textContent = achievements;
 	document.querySelector(".miscellaneous").textContent = miscellaneous;
