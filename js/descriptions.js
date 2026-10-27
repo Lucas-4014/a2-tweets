@@ -39,7 +39,6 @@ function addEventHandlerForSearch() {
 
 				const row = document.getElementById("tweetTable").insertRow();
 				row.innerHTML = tweet.getHTMLTableRow(searchCount);
-				console.log(tweet.text);
 			}
 		}
 		writtenTweets.forEach(runTweetDescriptions);
